@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.widget.*;
 import java.util.*;
 public final class suggestionsRecipe extends Activity{
-    private PantryDb db;
+    private pantryDB db;
     @Override
     public void onCreate(Bundle b){
         super.onCreate(b);
-        db=new PantryDb(this);
+        db=new pantryDB(this);
     }
     @Override
     public void onResume(){
@@ -24,7 +24,7 @@ public final class suggestionsRecipe extends Activity{
         ArrayList<PantryItem> pantry=db.pantry(false);
         ArrayList<Recipe> matches=new ArrayList<>();
         for(Recipe recipe:db.recipes())
-            if(Matching.qualifies(recipe,pantry))
+            if(RecipeMatches.qualifies(recipe,pantry))
                 matches.add(recipe);
         if(matches.isEmpty())
             root.addView(Ui.text(this,"No Recipe match.Check quantity and add ingredients",16),Ui.space(this));
@@ -34,7 +34,7 @@ public final class suggestionsRecipe extends Activity{
         ListView list=new ListView(this);
         list.setAdapter(new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,labels));
         list.setOnItemClickListener((parent,view,position,id)->{
-            Intent intent=new Intent(this,RecipeDetailActivity.class);
+            Intent intent=new Intent(this,recipe.class);
             intent.putExtra("recipe_id",matches.get(position).id);
             startActivity(intent);
         });

@@ -2,11 +2,11 @@ package com.example.smartpantrymanager_mad700;
 import android.app.Activity;
 import android.widget.LinearLayout;
 import android.os.Bundle;
-public final class recipe {
+public final class recipe extends Activity{
     @Override
     public void onCreate(Bundle b){
         super.onCreate(b);
-        Recipe recipe = new PantryDB(this).recipe(getIntent().getLongExtra("recipe_id",-1));
+        Recipe recipe = new pantryDB(this).recipe(getIntent().getLongExtra("recipe_id",-1));
         if(recipe==null){
             finish();
             return;

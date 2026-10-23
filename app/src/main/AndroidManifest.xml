@@ -12,7 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartPantryManager_MAD700">
         <activity
-            android:name=".MainActivity"
+            android:name=".editIngredients"
+            android:exported="false" />
+        <activity
+            android:name=".suggestionsRecipe"
+            android:exported="false" />
+        <activity
+            android:name=".recipe"
+            android:exported="false" />
+        <activity
+            android:name=".pantrySettings"
+            android:exported="false" />
+        <activity
+            android:name=".PantryActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
