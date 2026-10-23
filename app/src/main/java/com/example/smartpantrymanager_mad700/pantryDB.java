@@ -4,6 +4,7 @@ import android.content.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.*;
 import java.util.*;
+import android.database.Cursor;
 
 
 //MAD700 Study Guide : Topic 3 tackles database patterns and the use of SQLiteOpenHelper
@@ -22,8 +23,8 @@ final class pantryDB extends SQLiteOpenHelper{
         db.execSQL("CREATE TABLE recipes " +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name TEXT NOT NULL," +
-                "instructions TEXT NOT NULL)");
-        db.execSQL("CREATE TABLE ingredients (" +
+                "steps TEXT NOT NULL)");
+        db.execSQL("CREATE TABLE requirements (" +
                 "_id INTEGER PRIMARY KEY AUTOINCREMENT ," +
                 "recipe_id INTEGER NOT NULL," +
                 "name TEXT NOT NULL," +
@@ -35,7 +36,7 @@ final class pantryDB extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }//Migrations will be added whenever the db schema will change
-        private static void add (SQLiteDatabase db, String name , String steps, Objects...ingredients ){
+        private static void add (SQLiteDatabase db, String name , String steps, Object... ingredients ){
             ContentValues recipe = new ContentValues();
             recipe.put("name", name );
             recipe.put("steps", steps);
@@ -74,10 +75,10 @@ final class pantryDB extends SQLiteOpenHelper{
             //Save items into db
             long saveItem(long id, String name, double quantity , String unit ,String expiry ){
                 ContentValues v  =new
-                        COntentValues();
-                v.put("name",Matching.normalize(name));
+                        ContentValues();
+                v.put("name",RecipeMatches.normalize(name));
                 v.put("quantity",quantity);
-                v.put("unit",Matching.unit(unit));
+                v.put("unit",RecipeMatches.unit(unit));
                 v.put("expiry",expiry.isEmpty()?null:expiry);
                 SQLiteDatabase db = getWritableDatabase();
                 if(id<0)
@@ -129,14 +130,3 @@ final class pantryDB extends SQLiteOpenHelper{
                 return null;
             }
         }
-
-
-
-
-
-
-
-        }
-
-    }
-}
