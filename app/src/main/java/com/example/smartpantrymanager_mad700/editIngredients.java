@@ -10,14 +10,14 @@ import java.text.ParseException;
 //Creating the logic behind the xml text inputs
 public class editIngredients extends Activity {
     private final String[] units={"x","g","kg","ml","L","packet","sachet","teaspoon","tablespoon"};
-    private PantryDb db;
+    private pantryDB db;
     private long itemId;
     private EditText name,quantity,expiry;
     private Spinner unit;
     @Override
     public void onCreate(Bundle b){
         super.onCreate(b);
-        db=new PantryDb(this);
+        db=new pantryDB(this);
         itemId=getIntent().getLongExtra("item_id",-1);
         LinearLayout root=Ui.column(this);
         setContentView(root);
@@ -47,8 +47,12 @@ public class editIngredients extends Activity {
             name.setText(item.name);
             quantity.setText(Ui.amount(item.quantity));
             expiry.setText(item.expiry==null?"":item.expiry);
-            for(int i=0;i<units.length;i++)
-                if(units[i].equals(item.unit))unit.setSelection(i);
+            for (int i = 0; i < units.length; i++) {
+                if (RecipeMatches.unit(units[i]).equals(item.unit)) {
+                    unit.setSelection(i);
+                    break;
+                }
+            }
             root.addView(Ui.button(this,"Delete ingredient",()->new AlertDialog.Builder(this).setTitle("Delete "+item.name+"?").setMessage("This will delete it from the pantry").setNegativeButton("Cancel",null).setPositiveButton("Delete",(dialog,which)->{db.deleteItem(itemId);
                 finish();}).show()),Ui.space(this));
         }
